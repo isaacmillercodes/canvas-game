@@ -1,1 +1,4 @@
 /* add custom styles */
+#game {
+  border: 6px solid grey;
+}

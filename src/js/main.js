@@ -1,10 +1,60 @@
 // add scripts
+$(document).ready(function() {
+  var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
 
-$(document).on('ready', function() {
-  var loader = new Loader({
-    bricks: ['assets/bricks/blue.png','assets/bricks/brown.png', 'assets/bricks/gray.png', 'assets/bricks/green.png', 'assets/bricks/orange.png', 'assets/bricks/purple.png', 'assets/bricks/red.png'],
-    bullets: ['assets/bullets/blue.png', 'assets/bullets/brown.png', 'assets/bullets/gray.png', 'assets/bullets/green.png', 'assets/bullets/orange.png', 'assets/bullets/purple.png', 'assets/bullets/red.png'],
-    paddles: ['assets/paddles/blue.png', 'assets/paddles/brown.png', 'assets/paddles/gray.png', 'assets/paddles/green.png', 'assets/paddles/orange.png', 'assets/paddles/purple.png', 'assets/paddles/red.png']
+  // drawAllRows(ctx, 20);
+  // var bullet = new Bullet('blue');
+  // bullet.draw(ctx);
+  // var paddle = new Paddle('red');
+  // paddle.draw(ctx);
+  //
+  // setInterval(() => {bullet.draw(ctx);}, 1000/60);
+
+  var bullet = new Bullet('green');
+  var paddle = new Paddle('green');
+
+  //setInterval(draw, 10);
+
+  function draw() {
+    drawAllRows(ctx, 20);
+    bullet.draw(ctx);
+    paddle.draw(ctx);
+  };
+
+  $(document).on('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+      paddle.move('left');
+    }
+
+    if (e.key === 'ArrowRight') {
+      paddle.move('right');
+    }
+
   });
-  loader.loadAll().then(assets => console.log(assets));
+
 });
+
+function drawRow(ctx, gutterX, gutterY) {
+  //should create Brick objs for a row
+  //loop over bricks
+  //draw them next to each other
+  var offset = 42;
+  var bricks = [];
+  for (var i = 0; i < 11; i++) {
+    bricks.push(new Brick({
+      pos: {x: offset, y: gutterY},
+      sprite: 'purple'
+    }));
+    offset += 32 + gutterX;
+  }
+  bricks.forEach(brick => brick.draw(ctx));
+}
+
+function drawAllRows(ctx, gutterX) {
+  var yOffset = 20;
+  for (var i = 0; i < 6; i++) {
+    drawRow(ctx, gutterX, yOffset);
+    yOffset += 26;
+  }
+};
